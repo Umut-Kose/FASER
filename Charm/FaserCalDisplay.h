@@ -92,7 +92,10 @@
 #include "../CoreUtils/TPOEvent.hh"
 //#include "fastjet/ClusterSequence.hh"
 
-
+#include <vector>
+#include <string>
+#include <map>
+#include <set>
 
 namespace display 
 {
@@ -134,6 +137,9 @@ namespace display
       void ShowPrimary();
       void ShowPixelHits();
       void ShowMuonParticles();
+      void ShowProtonParticles();
+      void ShowPionParticles();
+      void ShowKaonParticles();
       void ShowSecondaryShowers();
       void ShowSecondaryHadShowers();
       void ShowPixelRecoTrack();
@@ -189,6 +195,9 @@ namespace display
 
       TGCheckButton *fPrimary;
       TGCheckButton *fMuons;
+      TGCheckButton *fProtons;
+      TGCheckButton *fPions;
+      TGCheckButton *fKaons;
       TGCheckButton *fSecondary;
       TGCheckButton *fEMShowers;
       TGCheckButton *fHadronShowers;
@@ -221,40 +230,63 @@ namespace display
       TEveElement * GetSelectedElement () { TEveElement::List_i it= gEve->GetSelection()->EndChildren(); return *(--it);}
       //////
       bool IsCharmed(int pdg) {
-	int abs_pdg = std::abs(pdg);	
-	// Check if it matches charmed meson or baryon
-	return (abs_pdg / 100 == 4) ||       // Charmed mesons: 4xx
-	  (abs_pdg / 1000 == 4) ||      // Charmed baryons: 4xxx
-	  (abs_pdg / 1000 == 104) ||    // Excited mesons: 104xx
-	  (abs_pdg / 10000 == 104);     // Excited baryons: 104xxx
+        int abs_pdg = std::abs(pdg);	
+        // Check if it matches charmed meson or baryon
+        return (abs_pdg / 100 == 4) ||       // Charmed mesons: 4xx
+        (abs_pdg / 1000 == 4) ||      // Charmed baryons: 4xxx
+        (abs_pdg / 1000 == 104) ||    // Excited mesons: 104xx
+        (abs_pdg / 10000 == 104);     // Excited baryons: 104xxx
       }
       ///////
+    bool IsShortLivedParticle(int pdg_id, int& particleType);
+    void TauDecayMode();
+    void IdentifyTauDecayMode(const std::vector<std::pair<int, int>>& daughterTracks);
+       bool ShortLivedParticleEvent();
+
+std::vector<int> fSLPParentIDs;
+    std::vector<std::string> fSLPNames;
+    std::vector<int> fSLPTypes; // 1=charm, 2=tau, 3=other
 
       void GetPryMuon();
       void CharmDecayMode();
       Int_t fCharmCharge;
       Double_t fCharmEnergy;
+      Int_t fTauCharge;
+      Double_t fTauEnergy;
 
       Int_t fEventNumber = 0;
       Int_t fRunNumber = 0;
       Int_t fMaskNumber = 0;
       Int_t fCharmParentID = -1;
       Int_t fCharmDaughterID = -1;
+      Int_t fTauParentID = -1;
+      Int_t fTauDaughterID = -1;
+
 
       Int_t fPryMuonID = -1;
       Int_t fCurrentEventNumber;
       Int_t fnumLayers = 0;
       Int_t fnumChargedDaughters=-1;
       Int_t fnumNeutralDaughters=-1;
+      Int_t fnumTauChargedDaughters=-1;
+      Int_t fnumTauNeutralDaughters=-1;
 
       Int_t fCharm;
+      Int_t fTau;
       std::string fdecayMode;
       std::string fcharmname=" ";
+      std::string ftauDecayMode;  
+      std::string ftauname=" ";
+
       void IdentifyCharmDecayMode(const std::vector<std::pair<int, int>> &daughterTracks);
       Double_t fdecay_vx, fdecay_vy, fdecay_vz;
+      Double_t ftau_vx, ftau_vy, ftau_vz;
+
       Int_t fdecay_module;
       Double_t fdecayFlightLength;
-      
+      Int_t ftau_decay_module;
+      Double_t ftauDecayFlightLength;
+
       std::vector<double> fmuTag_p;
       std::vector<double> fmuTag_px;
       std::vector<double> fmuTag_py;
@@ -304,6 +336,9 @@ namespace display
 
       TGeoVolume *primary;
       TGeoVolume *muonhit;
+      TGeoVolume *pionhit;
+      TGeoVolume *protonhit;
+      TGeoVolume *kaonhit;
       TGeoVolume *secondary;
       TGeoVolume *secondary_em;
       TGeoVolume *secondary_had;
@@ -325,6 +360,9 @@ namespace display
       TEveElementList* fShortLivedParticleHitElements;
       TEveElementList* fPixelRecoTrackElements;
       TEveElementList* fMuonHitElements;
+      TEveElementList* fProtonHitElements;
+      TEveElementList* fPionHitElements;
+      TEveElementList* fKaonHitElements;
 
       TEveElementList* fRearECALElements;
       TEveElementList* fRearHCALElements;

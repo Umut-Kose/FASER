@@ -56,6 +56,11 @@ add_executable(FaserCalAnalyzer FaserCalAnalyzer.cxx)
 target_include_directories(FaserCalAnalyzer PRIVATE ${ROOT_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ../CoreUtils ${GENFITINCDIR})
 target_link_libraries(FaserCalAnalyzer FaserCalDisplay ${ROOT_LIBRARIES} genfit2)
 
+add_executable(FaserCalAnalyzer2nd FaserCalAnalyzer2nd.cxx)
+target_include_directories(FaserCalAnalyzer2nd PRIVATE ${ROOT_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ../CoreUtils ${GENFITINCDIR})
+target_link_libraries(FaserCalAnalyzer2nd FaserCalDisplay ${ROOT_LIBRARIES} genfit2)
+
+
 add_executable(DumpMuonHits DumpMuonHits.cxx)
 target_include_directories(DumpMuonHits PRIVATE ${ROOT_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ../CoreUtils ${GENFITINCDIR})
 target_link_libraries(DumpMuonHits FaserCalDisplay ${ROOT_LIBRARIES} genfit2)

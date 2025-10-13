@@ -1780,7 +1780,7 @@ void TPORecoEvent::Reconstruct3DClusters()
       double adjustedZ = ilayer * (layerPerVolume * voxelSize + gapSize) + iz * voxelSize + voxelSize * 0.5;
       
       double e = v.second.RawEnergy;
-      std::cout << ID << " " << ilayer << " " << fix << " " << fiy << " " << fiz << " " << e << " " << adjustedZ << " " << std::endl;
+      //std::cout << ID << " " << ilayer << " " << fix << " " << fiy << " " << fiz << " " << e << " " << adjustedZ << " " << std::endl;
       if (e < recoConfig.clusters_threshold_2dhit) // need for summing up 3D??? but in Z we would have saturation so lets forget about it
         continue;
       
